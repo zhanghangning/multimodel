@@ -1,0 +1,60 @@
+# configs/default.yaml
+
+# 数据集配置
+dataset:
+  coco_ann_file: "coco/annotations/captions_train2017.json"
+  image_dir: "coco/train2017"
+  audio_dir: "audio"
+  categories: ["dog", "cat", "car", "airplane", "person"]
+  max_per_class: 100
+
+
+# configs/default.yaml
+
+model:
+  num_ops: 4
+  input_channels: 3
+  hidden_size: 256
+  text_dim: 768           # 文本嵌入维度
+  audio_dim: 40           # 音频特征维度
+  text_encoder_hidden_dim: 128   # 文本编码器隐藏层大小
+  audio_encoder_hidden_dim: 64   # 音频编码器隐藏层大小
+
+# 测试数据集配置（可与训练不同）
+test_dataset:
+  coco_ann_file: "coco/annotations/captions_val2017.json"
+  image_dir: "coco/val2017"
+  audio_dir: "audio"
+  categories: ["dog", "cat", "car", "airplane", "person"]
+  max_per_class: 50
+
+# # 模型配置
+# model:
+#   num_ops: 4  # 可选的操作数量（例如：CNN、Transformer 等）
+#   input_channels: 3  # RGB 输入通道数
+#   hidden_size: 256  # 多模态融合层输入大小
+
+# 融合模块配置
+fusion:
+  fusion_type: "concat"  # 可选："concat", "attention", "gated"
+  output_size: 128  # 融合后的特征维度
+  dropout_rate: 0.5
+
+# 训练配置
+train:
+  batch_size: 16
+  learning_rate: 1e-3
+  num_epochs: 20
+  weight_decay: 1e-4
+  log_interval: 10
+
+# NAS 搜索配置
+nas:
+  controller_lr: 3e-4          # 控制器学习率（删除引号）
+  model_lr: 1e-3                # 模型学习率（删除引号）
+  baseline_decay: 0.9          # 基线衰减因子
+  entropy_coeff: 0.01          # 熵系数
+  sample_num: 5                # 每次采样数量
+  max_steps: 100               # 最大训练步数
+  save_path: "checkpoints/nas_controller.pth"
+  epochs: 10
